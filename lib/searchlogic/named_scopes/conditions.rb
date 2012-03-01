@@ -14,6 +14,7 @@ module Searchlogic
         :does_not_equal => [:not_equal_to, :is_not, :not, :ne],
         :less_than => [:lt, :before],
         :less_than_or_equal_to => [:lte],
+        :date_less_than_or_equal_to => [:date_lte],
         :greater_than => [:gt, :after],
         :greater_than_or_equal_to => [:gte],
       }
@@ -112,6 +113,8 @@ module Searchlogic
             scope_options(condition, column_type, "#{table_name}.#{column} != ?", :skip_conversion => skip_conversion)
           when /^less_than_or_equal_to/
             scope_options(condition, column_type, "#{table_name}.#{column} <= ?", :skip_conversion => skip_conversion)
+          when /^date_less_than_or_equal_to/
+            scope_options(condition, column_type, "#{table_name}.#{column} <= addtime(timestamp(date(?)),'23:59:59')", :skip_conversion => skip_conversion)
           when /^less_than/
             scope_options(condition, column_type, "#{table_name}.#{column} < ?", :skip_conversion => skip_conversion)
           when /^greater_than_or_equal_to/
